@@ -2,7 +2,7 @@ package hr.mbjelac.sandbox.ascii_path_follower.acceptance;
 
 import org.junit.Test;
 
-public class PathFollowingTest {
+public class PathFollowingTest extends AcceptanceTest {
 
     @Test
     public void map1() {
@@ -61,19 +61,4 @@ public class PathFollowingTest {
         andLettersAre("BEEFCAKE");
     }
 
-    private void givenMap(String... asciiMapRows) {
-
-    }
-
-    private void whenFollowingPath() {
-
-    }
-
-    private void thenPathIs(String expectedPath) {
-
-    }
-
-    private void andLettersAre(String expectedLetters) {
-
-    }
 }
