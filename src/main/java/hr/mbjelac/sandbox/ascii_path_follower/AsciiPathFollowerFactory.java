@@ -5,6 +5,7 @@ public class AsciiPathFollowerFactory {
     public static AsciiPathFollower create() {
 
         return new AsciiPathFollower(
+                new StartFinder(),
                 new Follower(),
                 new LetterExtractor());
     }
