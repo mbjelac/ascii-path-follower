@@ -7,12 +7,13 @@ public class PathFollowingTest {
     @Test
     public void map1() {
 
-        givenMap("" +
-                "@---A---+\n" +
-                "        |\n" +
-                "x-B-+   C\n" +
-                "    |   |\n" +
-                "    +---+");
+        givenMap(
+                "@---A---+",
+                "        |",
+                "x-B-+   C",
+                "    |   |",
+                "    +---+"
+        );
 
         whenFollowingPath();
 
@@ -20,7 +21,7 @@ public class PathFollowingTest {
         andLettersAre("ACB");
     }
 
-    private void givenMap(String asciiMap) {
+    private void givenMap(String... asciiMapRows) {
 
     }
 
