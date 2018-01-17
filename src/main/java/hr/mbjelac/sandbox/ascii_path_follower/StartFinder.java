@@ -4,6 +4,7 @@ package hr.mbjelac.sandbox.ascii_path_follower;
 import lombok.val;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 
 class StartFinder {
 
@@ -15,7 +16,43 @@ class StartFinder {
             throw new IllegalArgumentException("map is null!");
         }
 
-        State state = null;
+        final AtomicReference<State> state = new AtomicReference<>(null);
+
+        crawlOverMap(
+                map,
+                (c, rowIndex, columnIndex) -> {
+
+                    if (c == STARTING_CHARACTER) {
+
+                        if (state.get() != null) {
+                            throw new IllegalArgumentException(
+                                    "Map has multiple starting characters: " +
+                                            mapToString(map));
+                        }
+
+                        state.set(State
+                                .builder()
+                                .x(columnIndex)
+                                .y(rowIndex)
+                                .build());
+                    }
+
+                });
+
+        if (state.get() == null) {
+            throw new IllegalArgumentException(
+                    "Map missing starting character: " + mapToString(map));
+        }
+
+        return state.get();
+    }
+
+    private interface MapListener {
+
+        void onElement(char element, int rowIndex, int columnIndex);
+    }
+
+    private void crawlOverMap(AsciiMap map, MapListener listener) {
 
         for (int rowIndex = 0; rowIndex < map.getRows().length; rowIndex++) {
 
@@ -25,29 +62,9 @@ class StartFinder {
 
                 val c = row[columnIndex];
 
-                if (c == STARTING_CHARACTER) {
-
-                    if (state != null) {
-                        throw new IllegalArgumentException(
-                                "Map has multiple starting characters: " +
-                                        mapToString(map));
-                    }
-
-                    state = State
-                            .builder()
-                            .x(columnIndex)
-                            .y(rowIndex)
-                            .build();
-                }
+                listener.onElement(c, rowIndex, columnIndex);
             }
         }
-
-        if (state == null) {
-            throw new IllegalArgumentException(
-                    "Map missing starting character: " + mapToString(map));
-        }
-
-        return state;
     }
 
     private String mapToString(AsciiMap map) {
