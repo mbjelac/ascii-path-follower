@@ -26,6 +26,17 @@ public class StartFinderTest {
                         "..."));
     }
 
+    @Test
+    public void throw_when_map_has_multiple_starting_characters() {
+
+        throwsIllegalArgEx(map("@@"));
+        throwsIllegalArgEx(map("@@@"));
+        throwsIllegalArgEx(
+                map(
+                        "@.",
+                        ".@"));
+    }
+
     private void throwsIllegalArgEx(AsciiMap map) {
 
         Assertions.assertThatThrownBy(() -> finder

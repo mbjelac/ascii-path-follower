@@ -15,6 +15,8 @@ class StartFinder {
             throw new IllegalArgumentException("map is null!");
         }
 
+        State state = null;
+
         for (int rowIndex = 0; rowIndex < map.getRows().length; rowIndex++) {
 
             val row = map.getRows()[rowIndex];
@@ -25,7 +27,13 @@ class StartFinder {
 
                 if (c == STARTING_CHARACTER) {
 
-                    return State
+                    if (state != null) {
+                        throw new IllegalArgumentException(
+                                "Map has multiple starting characters: " +
+                                        mapToString(map));
+                    }
+
+                    state = State
                             .builder()
                             .x(columnIndex)
                             .y(rowIndex)
@@ -34,10 +42,17 @@ class StartFinder {
             }
         }
 
-        throw new IllegalArgumentException(
-                "Map missing starting character " +
-                        "'" + STARTING_CHARACTER + "': " +
-                        Arrays.deepToString(map.getRows()));
+        if (state == null) {
+            throw new IllegalArgumentException(
+                    "Map missing starting character: " + mapToString(map));
+        }
+
+        return state;
+    }
+
+    private String mapToString(AsciiMap map) {
+
+        return Arrays.deepToString(map.getRows());
     }
 
 }
