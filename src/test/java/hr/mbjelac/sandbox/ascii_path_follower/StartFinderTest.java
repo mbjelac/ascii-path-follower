@@ -69,7 +69,7 @@ public class StartFinderTest {
 
     private AsciiMap map(String... rows) {
 
-        return new AsciiMap(rows);
+        return AsciiMap.fromStrings(rows);
     }
 
     private State state(int x, int y) {
