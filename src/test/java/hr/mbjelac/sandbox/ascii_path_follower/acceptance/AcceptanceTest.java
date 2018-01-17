@@ -1,14 +1,12 @@
 package hr.mbjelac.sandbox.ascii_path_follower.acceptance;
 
-import hr.mbjelac.sandbox.ascii_path_follower.AsciiMap;
-import hr.mbjelac.sandbox.ascii_path_follower.AsciiPathFollower;
-import hr.mbjelac.sandbox.ascii_path_follower.FollowedPath;
+import hr.mbjelac.sandbox.ascii_path_follower.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 abstract class AcceptanceTest {
 
-    private final AsciiPathFollower follower = new AsciiPathFollower();
+    private final AsciiPathFollower follower = AsciiPathFollowerFactory.create();
 
     private AsciiMap map;
     private FollowedPath path;
