@@ -6,12 +6,15 @@ import lombok.val;
 @RequiredArgsConstructor
 public class AsciiPathFollower {
 
+    private final StartFinder startFinder;
     private final Follower follower;
     private final LetterExtractor letterExtractor;
 
     public FollowedPath follow(AsciiMap map) {
 
-        val pathCharacters = follower.follow(map);
+        val startingState = startFinder.findStart(map);
+
+        val pathCharacters = follower.follow(startingState, map);
 
         val letters = letterExtractor.extract(pathCharacters);
 
