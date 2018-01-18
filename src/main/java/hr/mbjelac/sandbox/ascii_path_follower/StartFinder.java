@@ -1,6 +1,5 @@
 package hr.mbjelac.sandbox.ascii_path_follower;
 
-import lombok.Value;
 import lombok.val;
 
 import java.util.Arrays;
@@ -11,7 +10,7 @@ class StartFinder {
 
     private static final char STARTING_CHARACTER = '@';
 
-    State findStart(AsciiMap map) {
+    Coordinates findStart(AsciiMap map) {
 
         if (map == null) {
             throw new IllegalArgumentException("Map is null!");
@@ -28,11 +27,6 @@ class StartFinder {
                         findInMap(
                                 map,
                                 c -> c == STARTING_CHARACTER))
-                .map(coordinates -> State
-                        .builder()
-                        .x(coordinates.getColumn())
-                        .y(coordinates.getRow())
-                        .build())
                 .orElseThrow(IllegalStateException::new);
     }
 
@@ -45,11 +39,6 @@ class StartFinder {
                         .replaceAll("[^" + STARTING_CHARACTER + "]", "")
                         .length())
                 .sum();
-    }
-
-    @Value
-    private class Coordinates {
-        int row, column;
     }
 
     private Coordinates findInMap(

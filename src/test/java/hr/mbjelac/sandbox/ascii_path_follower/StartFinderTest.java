@@ -45,36 +45,36 @@ public class StartFinderTest {
     }
 
     @Test
-    public void return_correct_state_when_starting_character_found() {
+    public void return_coordinates_of_starting_character() {
 
-        assertState(
+        assertFoundCoords(
                 map(
                         "...",
                         ".@.",
                         "..."),
-                state(1, 1));
+                xy(1, 1));
 
-        assertState(
+        assertFoundCoords(
                 map(
                         "...",
                         "...",
                         "..@"),
-                state(2, 2));
+                xy(2, 2));
 
-        assertState(
+        assertFoundCoords(
                 map(
                         "..@",
                         "...",
                         "..."),
-                state(2, 0));
+                xy(2, 0));
     }
 
 
-    private void assertState(AsciiMap map, State expectedState) {
+    private void assertFoundCoords(AsciiMap map, Coordinates expectedCoordinates) {
 
         assertThat(finder
                 .findStart(map))
-                .isEqualTo(expectedState);
+                .isEqualTo(expectedCoordinates);
 
     }
 
@@ -83,12 +83,12 @@ public class StartFinderTest {
         return AsciiMap.fromStrings(rows);
     }
 
-    private State state(int x, int y) {
+    private Coordinates xy(int x, int y) {
 
-        return State
+        return Coordinates
                 .builder()
-                .x(x)
-                .y(y)
+                .column(x)
+                .row(y)
                 .build();
     }
 }
