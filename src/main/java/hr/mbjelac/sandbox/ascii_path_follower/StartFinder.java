@@ -16,43 +16,47 @@ class StartFinder {
             throw new IllegalArgumentException("map is null!");
         }
 
-        final AtomicReference<State> state = new AtomicReference<>(null);
+        if (countStartingCharacters(map) != 1) {
+            throw new IllegalArgumentException(
+                    "Map should contain exactly 1 starting character: " +
+                            Arrays.deepToString(map.getRows()));
+        }
 
-        crawlOverMap(
+        return crawlOverMap(
                 map,
                 (c, rowIndex, columnIndex) -> {
 
                     if (c == STARTING_CHARACTER) {
 
-                        if (state.get() != null) {
-                            throw new IllegalArgumentException(
-                                    "Map has multiple starting characters: " +
-                                            mapToString(map));
-                        }
-
-                        state.set(State
+                        return State
                                 .builder()
                                 .x(columnIndex)
                                 .y(rowIndex)
-                                .build());
+                                .build();
                     }
 
+                    return null;
                 });
-
-        if (state.get() == null) {
-            throw new IllegalArgumentException(
-                    "Map missing starting character: " + mapToString(map));
-        }
-
-        return state.get();
     }
 
-    private interface MapListener {
+    private int countStartingCharacters(AsciiMap map) {
 
-        void onElement(char element, int rowIndex, int columnIndex);
+        return Arrays
+                .stream(map.getRows())
+                .mapToInt(row -> String
+                        .valueOf(row)
+                        .replaceAll("[^" + STARTING_CHARACTER + "]", "")
+                        .length())
+                .sum();
     }
 
-    private void crawlOverMap(AsciiMap map, MapListener listener) {
+    private interface MapListener<T> {
+
+        T onElement(char element, int rowIndex, int columnIndex);
+
+    }
+
+    private <T> T crawlOverMap(AsciiMap map, MapListener<T> listener) {
 
         for (int rowIndex = 0; rowIndex < map.getRows().length; rowIndex++) {
 
@@ -62,14 +66,14 @@ class StartFinder {
 
                 val c = row[columnIndex];
 
-                listener.onElement(c, rowIndex, columnIndex);
+                T t = listener.onElement(c, rowIndex, columnIndex);
+
+                if (t != null) {
+                    return t;
+                }
             }
         }
+
+        throw new IllegalStateException();
     }
-
-    private String mapToString(AsciiMap map) {
-
-        return Arrays.deepToString(map.getRows());
-    }
-
 }
