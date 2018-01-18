@@ -7,5 +7,6 @@ import lombok.Value;
 @Builder
 class State {
 
-    int x, y;
+    Coordinates location;
+    Direction direction;
 }

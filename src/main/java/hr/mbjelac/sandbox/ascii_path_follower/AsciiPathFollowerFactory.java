@@ -6,6 +6,7 @@ public class AsciiPathFollowerFactory {
 
         return new AsciiPathFollower(
                 new StartFinder(),
+                new DirectionFinder(),
                 new Follower(),
                 new LetterExtractor());
     }

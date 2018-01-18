@@ -7,14 +7,22 @@ import lombok.val;
 public class AsciiPathFollower {
 
     private final StartFinder startFinder;
+    private final DirectionFinder directionFinder;
     private final Follower follower;
     private final LetterExtractor letterExtractor;
 
     public FollowedPath follow(AsciiMap map) {
 
-        val startingState = startFinder.findStart(map);
+        val startingCoordinates = startFinder.findStart(map);
 
-        val pathCharacters = follower.follow(startingState, map);
+        val startingDirection = directionFinder.findDirection(map, startingCoordinates);
+
+        val initialState = State.builder()
+                .location(startingCoordinates)
+                .direction(startingDirection)
+                .build();
+
+        val pathCharacters = follower.follow(initialState, map);
 
         val letters = letterExtractor.extract(pathCharacters);
 
