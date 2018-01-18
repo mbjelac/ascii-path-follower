@@ -13,7 +13,7 @@ class StartFinder {
     State findStart(AsciiMap map) {
 
         if (map == null) {
-            throw new IllegalArgumentException("map is null!");
+            throw new IllegalArgumentException("Map is null!");
         }
 
         if (countStartingCharacters(map) != 1) {
