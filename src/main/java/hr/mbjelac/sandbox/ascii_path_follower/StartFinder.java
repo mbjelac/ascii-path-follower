@@ -1,10 +1,11 @@
 package hr.mbjelac.sandbox.ascii_path_follower;
 
-
+import lombok.Value;
 import lombok.val;
 
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 class StartFinder {
 
@@ -22,21 +23,17 @@ class StartFinder {
                             Arrays.deepToString(map.getRows()));
         }
 
-        return crawlOverMap(
-                map,
-                (c, rowIndex, columnIndex) -> {
-
-                    if (c == STARTING_CHARACTER) {
-
-                        return State
-                                .builder()
-                                .x(columnIndex)
-                                .y(rowIndex)
-                                .build();
-                    }
-
-                    return null;
-                });
+        return Optional
+                .ofNullable(
+                        findInMap(
+                                map,
+                                c -> c == STARTING_CHARACTER))
+                .map(coordinates -> State
+                        .builder()
+                        .x(coordinates.getColumn())
+                        .y(coordinates.getRow())
+                        .build())
+                .orElseThrow(IllegalStateException::new);
     }
 
     private int countStartingCharacters(AsciiMap map) {
@@ -50,13 +47,14 @@ class StartFinder {
                 .sum();
     }
 
-    private interface MapListener<T> {
-
-        T onElement(char element, int rowIndex, int columnIndex);
-
+    @Value
+    private class Coordinates {
+        int row, column;
     }
 
-    private <T> T crawlOverMap(AsciiMap map, MapListener<T> listener) {
+    private Coordinates findInMap(
+            AsciiMap map,
+            Predicate<Character> matcher) {
 
         for (int rowIndex = 0; rowIndex < map.getRows().length; rowIndex++) {
 
@@ -66,14 +64,12 @@ class StartFinder {
 
                 val c = row[columnIndex];
 
-                T t = listener.onElement(c, rowIndex, columnIndex);
-
-                if (t != null) {
-                    return t;
+                if (matcher.test(c)) {
+                    return new Coordinates(rowIndex, columnIndex);
                 }
             }
         }
 
-        throw new IllegalStateException();
+        return null;
     }
 }
