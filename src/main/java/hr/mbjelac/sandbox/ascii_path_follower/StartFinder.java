@@ -19,7 +19,7 @@ class StartFinder {
         if (countStartingCharacters(map) != 1) {
             throw new IllegalArgumentException(
                     "Map should contain exactly 1 starting character: " +
-                            Arrays.deepToString(map.getRows()));
+                            Arrays.deepToString(map.getCells()));
         }
 
         return Optional
@@ -33,7 +33,7 @@ class StartFinder {
     private int countStartingCharacters(AsciiMap map) {
 
         return Arrays
-                .stream(map.getRows())
+                .stream(map.getCells())
                 .mapToInt(row -> String
                         .valueOf(row)
                         .replaceAll("[^" + STARTING_CHARACTER + "]", "")
@@ -45,9 +45,9 @@ class StartFinder {
             AsciiMap map,
             Predicate<Character> matcher) {
 
-        for (int rowIndex = 0; rowIndex < map.getRows().length; rowIndex++) {
+        for (int rowIndex = 0; rowIndex < map.getCells().length; rowIndex++) {
 
-            val row = map.getRows()[rowIndex];
+            val row = map.getCells()[rowIndex];
 
             for (int columnIndex = 0; columnIndex < row.length; columnIndex++) {
 

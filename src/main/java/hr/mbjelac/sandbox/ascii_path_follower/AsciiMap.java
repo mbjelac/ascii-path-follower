@@ -7,7 +7,7 @@ import java.util.Arrays;
 @Value
 public class AsciiMap {
 
-    char[][] rows;
+    char[][] cells;
 
     public static AsciiMap from(String... strings) {
 
@@ -15,5 +15,10 @@ public class AsciiMap {
                 Arrays.stream(strings)
                         .map(String::toCharArray)
                         .toArray(char[][]::new));
+    }
+
+    public char get(Coordinates coordinates) {
+
+        return cells[coordinates.getRow()][coordinates.getColumn()];
     }
 }
