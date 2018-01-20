@@ -13,7 +13,7 @@ abstract class AcceptanceTest {
 
     protected final void givenMap(String... asciiMapRows) {
 
-        map = AsciiMap.fromStrings(asciiMapRows);
+        map = AsciiMap.from(asciiMapRows);
     }
 
     protected final void whenFollowingPath() {

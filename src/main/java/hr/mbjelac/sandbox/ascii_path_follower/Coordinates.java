@@ -8,4 +8,9 @@ import lombok.Value;
 class Coordinates {
 
     int row, column;
+
+    public static Coordinates colRow(int column, int row) {
+
+        return new Coordinates(row, column);
+    }
 }

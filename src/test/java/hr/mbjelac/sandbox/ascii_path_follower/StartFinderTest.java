@@ -80,7 +80,7 @@ public class StartFinderTest {
 
     private AsciiMap map(String... rows) {
 
-        return AsciiMap.fromStrings(rows);
+        return AsciiMap.from(rows);
     }
 
     private Coordinates xy(int x, int y) {

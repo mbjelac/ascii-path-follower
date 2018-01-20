@@ -9,7 +9,7 @@ public class AsciiMap {
 
     char[][] rows;
 
-    public static AsciiMap fromStrings(String... strings) {
+    public static AsciiMap from(String... strings) {
 
         return new AsciiMap(
                 Arrays.stream(strings)
