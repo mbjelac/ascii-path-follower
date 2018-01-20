@@ -18,6 +18,17 @@ public class DirectionFinderTest {
         throwsIllegalArgEx(null, Coordinates.colRow(0, 0));
     }
 
+    @Test
+    public void throw_when_no_paths() {
+
+        throwsIllegalArgEx(
+                AsciiMap.from(
+                        "   ",
+                        " x ",
+                        "   "),
+                Coordinates.colRow(1, 1));
+    }
+
     private void throwsIllegalArgEx(AsciiMap map, Coordinates coords) {
 
         assertThatThrownBy(() -> finder
@@ -59,15 +70,39 @@ public class DirectionFinderTest {
     }
 
     @Test
-    public void throw_when_no_paths() {
+    public void return_directions_when_starting_on_map_edge() {
 
-        throwsIllegalArgEx(
+        findFor(
+                AsciiMap.from(
+                        "|  ",
+                        "x  ",
+                        "   "),
+                Coordinates.colRow(0, 1))
+                .direction(Direction.UP);
+        findFor(
+                AsciiMap.from(
+                        " x-",
+                        "   ",
+                        "   "),
+                Coordinates.colRow(1, 0))
+                .direction(Direction.RIGHT);
+        findFor(
                 AsciiMap.from(
                         "   ",
-                        " x ",
-                        "   "),
-                Coordinates.colRow(1, 1));
+                        "  x",
+                        "  |"),
+                Coordinates.colRow(2, 1))
+                .direction(Direction.DOWN);
+        findFor(
+                AsciiMap.from(
+                        "   ",
+                        "   ",
+                        "-x "),
+                Coordinates.colRow(1, 2))
+                .direction(Direction.LEFT);
     }
+
+
 
     private DirectionAssert findFor(AsciiMap map, Coordinates startingCoordinates) {
 
