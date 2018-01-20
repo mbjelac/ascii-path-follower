@@ -58,6 +58,17 @@ public class DirectionFinderTest {
                 .direction(Direction.LEFT);
     }
 
+    @Test
+    public void throw_when_no_paths() {
+
+        throwsIllegalArgEx(
+                AsciiMap.from(
+                        "   ",
+                        " x ",
+                        "   "),
+                Coordinates.colRow(1, 1));
+    }
+
     private DirectionAssert findFor(AsciiMap map, Coordinates startingCoordinates) {
 
         return new DirectionAssert(map, startingCoordinates);
