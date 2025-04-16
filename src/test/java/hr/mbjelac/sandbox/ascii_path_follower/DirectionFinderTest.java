@@ -39,72 +39,76 @@ public class DirectionFinderTest {
     @Test
     public void return_directions_for_simple_cases() {
 
-        findFor(
+        assertDirection(
                 AsciiMap.from(
                         " | ",
                         " x ",
                         "   "),
                 Coordinates.colRow(1, 1))
-                .direction(Direction.UP);
-        findFor(
+                .isEqualTo(Direction.UP);
+        assertDirection(
                 AsciiMap.from(
                         "   ",
                         " x-",
                         "   "),
                 Coordinates.colRow(1, 1))
-                .direction(Direction.RIGHT);
-        findFor(
+                .isEqualTo(Direction.RIGHT);
+        assertDirection(
                 AsciiMap.from(
                         "   ",
                         " x ",
                         " | "),
                 Coordinates.colRow(1, 1))
-                .direction(Direction.DOWN);
-        findFor(
+                .isEqualTo(Direction.DOWN);
+        assertDirection(
                 AsciiMap.from(
                         "   ",
                         "-x ",
                         "   "),
                 Coordinates.colRow(1, 1))
-                .direction(Direction.LEFT);
+                .isEqualTo(Direction.LEFT);
     }
 
     @Test
     public void return_directions_when_starting_on_map_edge() {
 
-        findFor(
+        assertDirection(
                 AsciiMap.from(
                         "|  ",
                         "x  ",
                         "   "),
-                Coordinates.colRow(0, 1))
-                .direction(Direction.UP);
-        findFor(
+                Coordinates.colRow(0, 1)
+        )
+                .isEqualTo(Direction.UP);
+        assertDirection(
                 AsciiMap.from(
                         " x-",
                         "   ",
                         "   "),
-                Coordinates.colRow(1, 0))
-                .direction(Direction.RIGHT);
-        findFor(
+                Coordinates.colRow(1, 0)
+        )
+                .isEqualTo(Direction.RIGHT);
+        assertDirection(
                 AsciiMap.from(
                         "   ",
                         "  x",
                         "  |"),
-                Coordinates.colRow(2, 1))
-                .direction(Direction.DOWN);
-        findFor(
+                Coordinates.colRow(2, 1)
+        )
+                .isEqualTo(Direction.DOWN);
+        assertDirection(
                 AsciiMap.from(
                         "   ",
                         "   ",
                         "-x "),
-                Coordinates.colRow(1, 2))
-                .direction(Direction.LEFT);
+                Coordinates.colRow(1, 2)
+        )
+                .isEqualTo(Direction.LEFT);
     }
 
 
 
-    private DirectionAssert findFor(AsciiMap map, Coordinates startingCoordinates) {
+    private DirectionAssert assertDirection(AsciiMap map, Coordinates startingCoordinates) {
 
         return new DirectionAssert(map, startingCoordinates);
     }
@@ -115,7 +119,7 @@ public class DirectionFinderTest {
         AsciiMap map;
         Coordinates startingCoordinates;
 
-        void direction(Direction expectedDirection) {
+        void isEqualTo(Direction expectedDirection) {
 
             assertThat(finder
                     .findDirection(map, startingCoordinates))
