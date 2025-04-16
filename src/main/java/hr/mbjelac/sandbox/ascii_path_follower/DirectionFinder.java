@@ -16,16 +16,17 @@ class DirectionFinder {
 
         return Arrays
                 .stream(Direction.values())
-                .filter(direction ->
-                        map
-                                .get(
-                                        direction
-                                                .move(startingCoordinates)) == direction.path)
+                .filter(direction -> {
+                    Coordinates nextCoords = direction.move(startingCoordinates);
+                    return nextCoords.isWithinBounds(map) && 
+                           map.get(nextCoords) == direction.path;
+                })
                 .findFirst()
                 .orElseThrow(() ->
                         new IllegalArgumentException(
-                                "Failed to find starting path!" +
-                                        "Map:" + map + ", " +
+                                "Failed to find starting path! " +
+                                        "Map: " + map + ", " +
                                         "Start: " + startingCoordinates));
     }
+
 }
