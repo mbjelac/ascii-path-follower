@@ -25,3 +25,7 @@ hs_err_pid*
 # Intellij
 
 .idea/*
+
+# VSC/Windsurf
+.vscode/*
+target/*
