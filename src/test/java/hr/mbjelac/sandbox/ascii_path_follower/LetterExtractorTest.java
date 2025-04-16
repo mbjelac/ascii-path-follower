@@ -1,6 +1,6 @@
 package hr.mbjelac.sandbox.ascii_path_follower;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

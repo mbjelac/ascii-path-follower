@@ -1,6 +1,6 @@
 package hr.mbjelac.sandbox.ascii_path_follower.acceptance;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PathFollowingTest extends AcceptanceTest {
 
