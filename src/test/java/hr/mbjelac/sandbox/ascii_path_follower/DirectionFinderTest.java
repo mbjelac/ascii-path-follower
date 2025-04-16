@@ -1,7 +1,8 @@
 package hr.mbjelac.sandbox.ascii_path_follower;
 
-import lombok.Value;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -39,91 +40,99 @@ public class DirectionFinderTest {
     @Test
     public void return_directions_for_simple_cases() {
 
-        assertDirection(
+        assertThat(finder.findDirection(
                 AsciiMap.from(
                         " | ",
                         " x ",
                         "   "),
-                Coordinates.colRow(1, 1))
+                Coordinates.colRow(1, 1)))
                 .isEqualTo(Direction.UP);
-        assertDirection(
+
+        assertThat(finder.findDirection(
                 AsciiMap.from(
                         "   ",
                         " x-",
                         "   "),
-                Coordinates.colRow(1, 1))
+                Coordinates.colRow(1, 1)))
                 .isEqualTo(Direction.RIGHT);
-        assertDirection(
+
+        assertThat(finder.findDirection(
                 AsciiMap.from(
                         "   ",
                         " x ",
                         " | "),
-                Coordinates.colRow(1, 1))
+                Coordinates.colRow(1, 1)))
                 .isEqualTo(Direction.DOWN);
-        assertDirection(
+
+        assertThat(finder.findDirection(
                 AsciiMap.from(
                         "   ",
                         "-x ",
                         "   "),
-                Coordinates.colRow(1, 1))
+                Coordinates.colRow(1, 1)))
                 .isEqualTo(Direction.LEFT);
     }
 
-    @Test
-    public void return_directions_when_starting_on_map_edge() {
+    enum DirectionExample {
 
-        assertDirection(
-                AsciiMap.from(
+        LEFT_EDGE_UP(
+                new String[]{
                         "|  ",
                         "x  ",
-                        "   "),
-                Coordinates.colRow(0, 1)
-        )
-                .isEqualTo(Direction.UP);
-        assertDirection(
-                AsciiMap.from(
+                        "   "
+                },
+                Coordinates.colRow(0, 1),
+                Direction.UP
+        ),
+
+        TOP_EDGE_RIGHT(
+                new String[]{
                         " x-",
                         "   ",
-                        "   "),
-                Coordinates.colRow(1, 0)
-        )
-                .isEqualTo(Direction.RIGHT);
-        assertDirection(
-                AsciiMap.from(
+                        "   "
+                },
+                Coordinates.colRow(1, 0),
+                Direction.RIGHT
+        ),
+
+        RIGHT_EDGE_DOWN(
+                new String[]{
                         "   ",
                         "  x",
-                        "  |"),
-                Coordinates.colRow(2, 1)
-        )
-                .isEqualTo(Direction.DOWN);
-        assertDirection(
-                AsciiMap.from(
+                        "  |"
+                },
+                Coordinates.colRow(2, 1),
+                Direction.DOWN
+        ),
+
+        BOTTOM_EDGE_LEFT(
+                new String[]{
                         "   ",
                         "   ",
-                        "-x "),
-                Coordinates.colRow(1, 2)
-        )
-                .isEqualTo(Direction.LEFT);
-    }
+                        "-x "
+                },
+                Coordinates.colRow(1, 2),
+                Direction.LEFT
+        );
 
+        final String[] mapRows;
+        final Coordinates startingPoint;
+        final Direction expectedDirection;
 
-
-    private DirectionAssert assertDirection(AsciiMap map, Coordinates startingCoordinates) {
-
-        return new DirectionAssert(map, startingCoordinates);
-    }
-
-    @Value
-    private class DirectionAssert {
-
-        AsciiMap map;
-        Coordinates startingCoordinates;
-
-        void isEqualTo(Direction expectedDirection) {
-
-            assertThat(finder
-                    .findDirection(map, startingCoordinates))
-                    .isEqualTo(expectedDirection);
+        DirectionExample(String[] mapRows, Coordinates startingPoint, Direction expectedDirection) {
+            this.mapRows = mapRows;
+            this.startingPoint = startingPoint;
+            this.expectedDirection = expectedDirection;
         }
+    }
+
+    @ParameterizedTest
+    @EnumSource(DirectionExample.class)
+    public void return_directions_when_starting_on_map_edge(DirectionExample example) {
+        assertThat(finder.findDirection(
+                AsciiMap.from(example.mapRows),
+                example.startingPoint
+        ))
+                .isEqualTo(example.expectedDirection);
     }
 }
